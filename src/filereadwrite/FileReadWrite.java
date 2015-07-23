@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.util.Scanner;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FileReadWrite {
     
@@ -82,6 +83,29 @@ public class FileReadWrite {
             }
         );
         fileMenu.add(saveMenuItem);
+        
+        JMenuItem openMenuItem = new JMenuItem("Open");
+        openMenuItem.addActionListener(
+            new ActionListener()  {
+                public void actionPerformed(ActionEvent e) {
+                    JFileChooser chooser = new JFileChooser();
+                    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                        "TXT files", "txt");
+                    chooser.setFileFilter(filter);
+                    int returnVal = chooser.showOpenDialog(null);
+                    if(returnVal == JFileChooser.APPROVE_OPTION) {
+                        try{
+                            userMessage.setText(readFile(chooser.getSelectedFile().getName()));
+                        }
+                        catch(IOException i){
+                            i.printStackTrace();
+                        }
+                       
+                    }
+                }
+            }
+        );
+        fileMenu.add(openMenuItem);
         
         window.setVisible(true);
     }
